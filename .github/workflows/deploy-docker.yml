@@ -5,6 +5,22 @@ on:
       - main
 
 jobs:
+  tests:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: setup jdk 22
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: 22
+
+      - name: unit tests
+        run: mvn -B test --file pom.xml
+
   build:
     name: push fcrypt docker image to docker hub
     runs-on: ubuntu-22.04
