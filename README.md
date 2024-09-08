@@ -20,3 +20,8 @@ or
 ```bash
 docker pull anthorld/fcrypt
 ```
+
+and then run the container to access directly the CLI:
+```bash
+docker run -it fcrypt
+```
