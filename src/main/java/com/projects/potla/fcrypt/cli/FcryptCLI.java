@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Key;
+import java.util.logging.Logger;
 
 @ShellComponent
 public class FcryptCLI {
@@ -24,9 +25,11 @@ public class FcryptCLI {
     private final Decryption decryption;
     private final Cipher cipher;
     private final Key secretKey;
+    private static final Logger LOGGER = Logger.getLogger(FcryptCLI.class.getName());
 
     @Autowired
     public FcryptCLI(Encryption encryption, Decryption decryption) throws Exception {
+        LOGGER.info("Initializing FcryptCLI");
         this.encryption = encryption;
         this.decryption = decryption;
         this.cipher = Cipher.getInstance("AES");
@@ -36,9 +39,11 @@ public class FcryptCLI {
     private Key loadOrGenerateKey() throws Exception {
         Path keyPath = Paths.get(KEY_FILE);
         if (Files.exists(keyPath)) {
+            LOGGER.info("Loading key");
             byte[] keyBytes = Files.readAllBytes(keyPath);
             return new SecretKeySpec(keyBytes, "AES");
         } else {
+            LOGGER.info("Generating key");
             KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
             keyGenerator.init(256);
             SecretKey newKey = keyGenerator.generateKey();
